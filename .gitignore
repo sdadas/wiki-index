@@ -1,0 +1,11 @@
+.idea
+data
+/**/node_modules/
+target
+.cache
+node
+*.iml
+*.ipr
+*.iws
+*.class
+*.log
