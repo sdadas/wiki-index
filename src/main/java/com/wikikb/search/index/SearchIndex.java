@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class SearchIndex implements AutoCloseable {
@@ -63,7 +64,10 @@ public class SearchIndex implements AutoCloseable {
 
     public void add(WikiPage... batch) {
         try {
-            List<Document> docs = Arrays.stream(batch).map(converter::toDocument).collect(Collectors.toList());
+            List<Document> docs = Arrays.stream(batch)
+                    .map(converter::toDocument)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
             writer.addDocuments(docs);
             writer.commit();
         } catch (Exception e) {

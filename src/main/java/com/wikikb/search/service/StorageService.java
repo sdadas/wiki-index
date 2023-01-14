@@ -6,6 +6,7 @@ import com.wikikb.search.lang.StandardLangauge;
 import com.wikikb.search.StorageConfig;
 import com.wikikb.search.index.SearchIndex;
 import org.apache.commons.io.FileUtils;
+import org.apache.lucene.analysis.Analyzer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -70,6 +71,10 @@ public class StorageService {
             String code = dir.getName();
             Language language = StandardLangauge.getByCode(code);
             this.createDir(dir);
+            Analyzer analyzer = language.analyzer();
+            String analyzerName = analyzer.getClass().getSimpleName();
+            analyzer.close();
+            LOG.info("Initializing wiki {} with {}", language.code(), analyzerName);
             return new SearchIndex(dir, language, mapper);
         } catch (IOException e) {
             throw new IllegalStateException(e);

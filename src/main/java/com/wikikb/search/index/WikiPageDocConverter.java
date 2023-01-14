@@ -2,13 +2,17 @@ package com.wikikb.search.index;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wikikb.model.WikiPage;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WikiPageDocConverter {
 
+    private static final Logger LOG = LoggerFactory.getLogger(WikiPageDocConverter.class);
     private final ObjectMapper mapper;
 
     public WikiPageDocConverter(ObjectMapper mapper) {
@@ -17,6 +21,11 @@ public class WikiPageDocConverter {
 
     public Document toDocument(WikiPage page) {
         Document doc = new Document();
+        boolean incorrect = StringUtils.isAnyBlank(page.getTitle(), page.getText(), page.getSummary());
+        if (incorrect) {
+            LOG.warn("Skipping incorrect document {}", page.getTitle());
+            return null;
+        }
         doc.add(new StringField("title", page.getTitle(), Field.Store.YES));
         doc.add(new TextField("title_text", page.getTitle(), Field.Store.YES));
         doc.add(new TextField("text", page.getText(), Field.Store.YES));

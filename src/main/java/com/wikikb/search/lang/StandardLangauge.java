@@ -4,6 +4,8 @@ import com.wikikb.search.analysis.PolishAnalyzer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
+import org.apache.lucene.analysis.fa.PersianAnalyzer;
+import org.apache.lucene.analysis.it.ItalianAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 
 public enum StandardLangauge implements Language {
@@ -18,6 +20,18 @@ public enum StandardLangauge implements Language {
         @Override
         public Analyzer analyzer() {
             return new PolishAnalyzer();
+        }
+    },
+    PERSIAN("fa") {
+        @Override
+        public Analyzer analyzer() {
+            return new PersianAnalyzer();
+        }
+    },
+    ITALIAN("it") {
+        @Override
+        public Analyzer analyzer() {
+            return new ItalianAnalyzer();
         }
     };
 
