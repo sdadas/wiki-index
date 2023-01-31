@@ -35,7 +35,7 @@ public class SearchService {
             BooleanQuery.Builder builder = new BooleanQuery.Builder();
             builder.add(textQuery, BooleanClause.Occur.MUST);
             builder.add(titleQuery, BooleanClause.Occur.SHOULD);
-            return index.query(builder.build(), null, 0, 10);
+            return index.query(builder.build(), null, request.getPage(), request.getPageSize());
         } catch (ParseException e) {
             throw new IllegalStateException(e);
         }
