@@ -8,6 +8,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.search.*;
 import org.apache.lucene.search.similarities.BM25Similarity;
 import org.apache.lucene.store.NIOFSDirectory;
@@ -72,6 +73,16 @@ public class SearchIndex implements AutoCloseable {
             writer.commit();
         } catch (Exception e) {
             LOG.error("Failed to commit batch", e);
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public void update(WikiPage page) {
+        Document doc = converter.toDocument(page);
+        Term term = new Term("title", page.getTitle());
+        try {
+            writer.updateDocument(term, doc);
+        } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }

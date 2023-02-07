@@ -23,6 +23,11 @@ public class WikiController {
         return search.query(code, request);
     }
 
+    @PostMapping("/{code}/update")
+    public void update(@PathVariable String code, @RequestBody WikiPage request) {
+        search.update(code, request);
+    }
+
     @PostMapping("/{code}/add")
     public void add(@PathVariable String code, @RequestBody WikiPage[] batch) {
         ForkJoinPool.commonPool().execute(() -> search.add(code, batch));

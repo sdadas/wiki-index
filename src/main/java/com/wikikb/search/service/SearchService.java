@@ -22,6 +22,11 @@ public class SearchService {
         this.storage = storage;
     }
 
+    public void update(String code, WikiPage page) {
+        SearchIndex index = this.storage.getWiki(code);
+        index.update(page);
+    }
+
     public SearchResponse<WikiPage> query(String code, SearchRequest request) {
         String query = request.getQuery();
         if (request.getPage() == null) request.setPage(0);
